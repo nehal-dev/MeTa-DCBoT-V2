@@ -55,7 +55,10 @@ module.exports = {
                     const response = await axios.get(apiUrl);
                     const { link, title } = response.data.data;
 
-                    const audioPath = path.join(__dirname, `../temp/${title}.mp3`);
+                    const tempDir = path.join(__dirname, '../temp');
+                    const audioPath = path.join(tempDir, `${sanitizeFilename(title)}.mp3`);
+                    
+                    await fs.ensureDir(tempDir);
                     await downloadFile(link, audioPath);
 
                     await replyCtx.telegram.deleteMessage(replyCtx.chat.id, loadingDownload.message_id);
@@ -91,7 +94,10 @@ async function downloadFile(url, filepath) {
         method: 'GET',
         responseType: 'arraybuffer'
     });
-    await fs.ensureDir(path.dirname(filepath));
     await fs.writeFile(filepath, Buffer.from(response.data));
     return filepath;
+}
+
+function sanitizeFilename(filename) {
+    return filename.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 }
