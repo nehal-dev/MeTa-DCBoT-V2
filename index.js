@@ -1,1 +1,102 @@
-function _0x3f58(_0x1894bc,_0x16e725){const _0x459355=_0x4593();return _0x3f58=function(_0x3f5891,_0x264fa1){_0x3f5891=_0x3f5891-0xd7;let _0x21d49a=_0x459355[_0x3f5891];return _0x21d49a;},_0x3f58(_0x1894bc,_0x16e725);}const _0xbdb6de=_0x3f58;(function(_0x413327,_0x34306e){const _0x2820dc=_0x3f58,_0x2919ce=_0x413327();while(!![]){try{const _0x189e04=parseInt(_0x2820dc(0x15f))/0x1+parseInt(_0x2820dc(0xdd))/0x2*(parseInt(_0x2820dc(0x162))/0x3)+parseInt(_0x2820dc(0x169))/0x4*(parseInt(_0x2820dc(0x10f))/0x5)+parseInt(_0x2820dc(0x132))/0x6*(-parseInt(_0x2820dc(0x123))/0x7)+-parseInt(_0x2820dc(0xe2))/0x8*(parseInt(_0x2820dc(0x148))/0x9)+parseInt(_0x2820dc(0x110))/0xa+-parseInt(_0x2820dc(0xdc))/0xb*(parseInt(_0x2820dc(0xfc))/0xc);if(_0x189e04===_0x34306e)break;else _0x2919ce['push'](_0x2919ce['shift']());}catch(_0x4a709c){_0x2919ce['push'](_0x2919ce['shift']());}}}(_0x4593,0xaefc7));const {Telegraf}=require(_0xbdb6de(0x128)),config=require(_0xbdb6de(0x12f)),path=require(_0xbdb6de(0x166)),fs=require(_0xbdb6de(0x136)),axios=require(_0xbdb6de(0x12c)),ffmpeg=require(_0xbdb6de(0xea)),{Readable}=require('stream');global[_0xbdb6de(0xf1)]={'commands':new Map(),'onReply':new Map(),'activeCommands':new Map(),'stats':{'commandsUsed':0x0,'messagesProcessed':0x0,'startTime':Date[_0xbdb6de(0x13e)](),'groupsJoined':0x0,'totalMembers':0x0,'mediaProcessed':0x0},'cooldowns':new Map(),'antiSpam':new Map(),'groupSettings':new Map(),'mediaQueue':new Map()};const {handleCommand,findSimilarCommand}=require(_0xbdb6de(0x14e)),{handleError}=require(_0xbdb6de(0x131)),bot=new Telegraf(config[_0xbdb6de(0xda)]);async function downloadMedia(_0x37f9c5,_0x28eb96){const _0x146a78=_0xbdb6de;try{const _0x2a19c1=await axios({'url':_0x37f9c5,'method':'GET','responseType':'stream','maxContentLength':0x32*0x400*0x400}),_0x2bd499=path[_0x146a78(0x13a)](__dirname,_0x146a78(0xe7),_0x28eb96),_0xdfc06a=fs['createWriteStream'](_0x2bd499);return new Promise((_0x41b9d7,_0xc08a38)=>{const _0x192f6b=_0x146a78;_0x2a19c1[_0x192f6b(0x120)][_0x192f6b(0xf7)](_0xdfc06a),_0xdfc06a['on'](_0x192f6b(0x116),()=>_0x41b9d7(_0x2bd499)),_0xdfc06a['on'](_0x192f6b(0x149),_0xc08a38);});}catch(_0x23d92f){throw new Error(_0x146a78(0x144)+_0x23d92f['message']);}}async function processAudio(_0x16e6ce,_0x28f4b2){return new Promise((_0x277afd,_0x215735)=>{const _0x2e72b7=_0x3f58;ffmpeg(_0x16e6ce)[_0x2e72b7(0xe9)](_0x2e72b7(0x150))['audioBitrate'](_0x2e72b7(0x163))[_0x2e72b7(0x156)](0x2)[_0x2e72b7(0x102)](0xac44)['on']('end',()=>_0x277afd(_0x28f4b2))['on'](_0x2e72b7(0x149),_0x215735)[_0x2e72b7(0xf5)](_0x28f4b2);});}async function processVideo(_0x3b5c42,_0x417252){return new Promise((_0x3ff854,_0x3f16ee)=>{const _0x25d997=_0x3f58;ffmpeg(_0x3b5c42)[_0x25d997(0xe9)](_0x25d997(0x108))['videoBitrate']('1000k')[_0x25d997(0x122)]('libx264')[_0x25d997(0x13b)](_0x25d997(0xd8))[_0x25d997(0x16a)](_0x25d997(0x139))[_0x25d997(0x114)]('128k')[_0x25d997(0x13f)](0x1e)['on'](_0x25d997(0x141),()=>_0x3ff854(_0x417252))['on'](_0x25d997(0x149),_0x3f16ee)[_0x25d997(0xf5)](_0x417252);});}function cleanupTempFiles(){const _0x432528=_0xbdb6de,_0x3993d7=path['join'](__dirname,_0x432528(0xe7));fs[_0x432528(0x15a)](_0x3993d7,(_0x27c3d5,_0x445f69)=>{const _0x24a93f=_0x432528;if(_0x27c3d5)return;_0x445f69[_0x24a93f(0x13d)](_0x305bdd=>{const _0x23bb76=_0x24a93f,_0x5a40e8=path[_0x23bb76(0x13a)](_0x3993d7,_0x305bdd);try{const _0x4436d9=fs['statSync'](_0x5a40e8),_0xbc3023=Date[_0x23bb76(0x13e)]();_0xbc3023-_0x4436d9[_0x23bb76(0x100)]>0x36ee80&&fs[_0x23bb76(0x11c)](_0x5a40e8);}catch(_0x534764){console[_0x23bb76(0x149)](_0x23bb76(0xd7),_0x534764);}});});}const introMessage='Hello\x20I\x27m\x20MeTa-AI\x20🎀\x0a\x0aPrefix:\x20'+config[_0xbdb6de(0x113)]+_0xbdb6de(0x127)+config[_0xbdb6de(0x113)]+'help\x20to\x20see\x20my\x20all\x20available\x20commands!',textDirector=new Map([[_0xbdb6de(0x113),introMessage],[_0xbdb6de(0xf4),introMessage],[_0xbdb6de(0x15c),introMessage],[config[_0xbdb6de(0x113)],introMessage],[_0xbdb6de(0x147),introMessage],[_0xbdb6de(0x10c),introMessage]]);function _0x4593(){const _0x338640=['clear','firstMsg','❌\x20Error\x20processing\x20video\x20file','axios','padEnd','video_','./config.json','leaveMessage','./errorHandler','24MwbcFd','mediaProcessed','file_path','count','fs-extra','SIGINT','reply_to_message','aac','join','size','video','forEach','now','fps','input_','end','replyWithAudio','default','Download\x20failed:\x20','{user}','onReply','hello\x20meta','9ozZPMZ','error','length','messagesProcessed','set','stats','./handlers/commandHandler','welcomeMessage','mp3','has','once','get','message','file_id','audioChannels','delete','ownerUID','Type\x20','readdir','.mp3','meta-ai','cooldowns','║\x20Owner\x20\x20\x20\x20\x20:\x20','1013544TtDvtV','text','left_chat_member','167721NOLqsp','128k','Did\x20you\x20mean:\x0a','║\x20Time\x20\x20\x20\x20\x20\x20:\x20','path','❌\x20Bot\x20is\x20being\x20rate\x20limited.\x20Please\x20try\x20again\x20later.','telegram','1756rnxMLs','audioCodec','Cleanup\x20error:','640x?','║\x20Status\x20\x20\x20\x20:\x20Online\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║','botToken','reply','3476dgZJBY','46NWEekX','new_chat_members','AudioProcessing','](tg://user?id=','totalMembers','10826232Pkrnsv','log','║\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20MeTa-AI\x20Bot\x20System\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║','https://api.telegram.org/file/bot','!\x0a\x0aPrefix:\x20','temp','WelcomeMessage','toFormat','fluent-ffmpeg','❌\x20Failed\x20to\x20fetch\x20external\x20resource.','⚠️\x20Please\x20slow\x20down!\x20You\x20are\x20sending\x20messages\x20too\x20quickly.','title','🎵\x20Processing\x20audio...','\x0aType\x20','from','Meta','unknown','replyWithVideo','meta','save','replace','pipe','toLowerCase','VideoProcessing','antiSpam','audio','50676ZFrIgW','first_name','voice','❌\x20Response\x20message\x20is\x20too\x20long\x20for\x20Telegram.','mtimeMs','keys','audioFrequency','toLocaleString','status','.mp4','❌\x20Error\x20processing\x20audio\x20file','stop','mp4','🎉\x20Thanks\x20for\x20adding\x20me\x20to\x20','slice','message_id','hi\x20meta','chat','❌\x20An\x20unexpected\x20error\x20occurred.','9385kFpBqs','3242980GeBJCc','botInfo','catch','prefix','audioBitrate','toString','finish','║\x20Prefix\x20\x20\x20\x20:\x20','{group}','❌\x20Command\x20\x22','❌\x20Error:\x20','map','unlinkSync','repeat','SIGTERM','exit','data','getFile','videoCodec','75628oCpZLx','MessageProcessing','includes','attempted','\x0a\x0aType\x20','telegraf'];_0x4593=function(){return _0x338640;};return _0x4593();}bot['on']([_0xbdb6de(0xfb),_0xbdb6de(0xfe)],async _0x4e31d2=>{const _0x254773=_0xbdb6de;try{const _0x37bb6d=_0x4e31d2[_0x254773(0x154)]['audio']||_0x4e31d2[_0x254773(0x154)][_0x254773(0xfe)],_0x17d240=_0x37bb6d['file_id'],_0xcecff8='audio_'+Date['now']()+_0x254773(0x15b);await _0x4e31d2[_0x254773(0xdb)](_0x254773(0xee));const _0x5e598a=await _0x4e31d2[_0x254773(0x168)][_0x254773(0x121)](_0x17d240),_0x4e01c5=path[_0x254773(0x13a)](__dirname,_0x254773(0xe7),'input_'+_0xcecff8),_0x3daeea=path[_0x254773(0x13a)](__dirname,'temp',_0xcecff8);await downloadMedia(_0x254773(0xe5)+config[_0x254773(0xda)]+'/'+_0x5e598a[_0x254773(0x134)],_0x254773(0x140)+_0xcecff8),await processAudio(_0x4e01c5,_0x3daeea),await _0x4e31d2[_0x254773(0x142)]({'source':_0x3daeea}),fs[_0x254773(0x11c)](_0x4e01c5),fs[_0x254773(0x11c)](_0x3daeea),global['Meta'][_0x254773(0x14d)][_0x254773(0x133)]++;}catch(_0x5098da){_0x4e31d2['reply'](_0x254773(0x106)),handleError(_0x254773(0xdf),_0x5098da);}}),bot['on'](_0xbdb6de(0x13c),async _0x509e50=>{const _0x440e3a=_0xbdb6de;try{const _0x4eb268=_0x509e50[_0x440e3a(0x154)][_0x440e3a(0x13c)],_0xbe1f85=_0x4eb268[_0x440e3a(0x155)],_0x8cc328=_0x440e3a(0x12e)+Date[_0x440e3a(0x13e)]()+_0x440e3a(0x105);await _0x509e50[_0x440e3a(0xdb)]('🎥\x20Processing\x20video...');const _0xa8dc56=await _0x509e50['telegram'][_0x440e3a(0x121)](_0xbe1f85),_0x563dec=path['join'](__dirname,_0x440e3a(0xe7),'input_'+_0x8cc328),_0x156efa=path[_0x440e3a(0x13a)](__dirname,'temp',_0x8cc328);await downloadMedia(_0x440e3a(0xe5)+config[_0x440e3a(0xda)]+'/'+_0xa8dc56[_0x440e3a(0x134)],_0x440e3a(0x140)+_0x8cc328),await processVideo(_0x563dec,_0x156efa),await _0x509e50[_0x440e3a(0xf3)]({'source':_0x156efa}),fs[_0x440e3a(0x11c)](_0x563dec),fs[_0x440e3a(0x11c)](_0x156efa),global[_0x440e3a(0xf1)][_0x440e3a(0x14d)][_0x440e3a(0x133)]++;}catch(_0x5bbcdf){_0x509e50[_0x440e3a(0xdb)](_0x440e3a(0x12b)),handleError(_0x440e3a(0xf9),_0x5bbcdf);}}),bot['on'](_0xbdb6de(0x160),async _0x53f2d2=>{const _0x8169a6=_0xbdb6de;try{const _0x2ce966=_0x53f2d2[_0x8169a6(0x154)]['text'][_0x8169a6(0xf8)]();global['Meta'][_0x8169a6(0x14d)][_0x8169a6(0x14b)]++;const _0x6cda93=_0x53f2d2[_0x8169a6(0xf0)]['id'][_0x8169a6(0x115)](),_0x24b3f4=Date[_0x8169a6(0x13e)]();!global['Meta'][_0x8169a6(0xfa)][_0x8169a6(0x151)](_0x6cda93)&&global[_0x8169a6(0xf1)][_0x8169a6(0xfa)][_0x8169a6(0x14c)](_0x6cda93,{'count':0x0,'firstMsg':_0x24b3f4});let _0xe24caf=global[_0x8169a6(0xf1)][_0x8169a6(0xfa)]['get'](_0x6cda93);_0xe24caf[_0x8169a6(0x135)]++;if(_0x24b3f4-_0xe24caf[_0x8169a6(0x12a)]<0x1388&&_0xe24caf[_0x8169a6(0x135)]>0x5)return _0x53f2d2[_0x8169a6(0xdb)](_0x8169a6(0xec));_0x24b3f4-_0xe24caf['firstMsg']>=0x1388&&global[_0x8169a6(0xf1)][_0x8169a6(0xfa)]['set'](_0x6cda93,{'count':0x1,'firstMsg':_0x24b3f4});if(textDirector[_0x8169a6(0x151)](_0x2ce966))return _0x53f2d2[_0x8169a6(0xdb)](textDirector[_0x8169a6(0x153)](_0x2ce966));if(!_0x2ce966['startsWith'](config['prefix'])){if(_0x53f2d2[_0x8169a6(0x154)]['reply_to_message']){const _0x2d0318=Meta[_0x8169a6(0x146)]['get'](_0x53f2d2[_0x8169a6(0x154)][_0x8169a6(0x138)][_0x8169a6(0x10b)]);if(_0x2d0318)return _0x2d0318(_0x53f2d2);}return;}const _0xf24d=await handleCommand(_0x53f2d2,_0x2ce966[_0x8169a6(0x10a)](config[_0x8169a6(0x113)][_0x8169a6(0x14a)]));if(_0xf24d[_0x8169a6(0x104)]===_0x8169a6(0xf2)){const _0x3504b0=findSimilarCommand(_0xf24d[_0x8169a6(0x126)]);let _0x23476a=_0x8169a6(0x119)+_0xf24d[_0x8169a6(0x126)]+'\x22\x20not\x20found.\x0a\x0a';_0x3504b0[_0x8169a6(0x14a)]>0x0?_0x23476a+=_0x8169a6(0x164)+_0x3504b0[_0x8169a6(0x11b)](_0x4b2c42=>'➜\x20'+config[_0x8169a6(0x113)]+_0x4b2c42)[_0x8169a6(0x13a)]('\x0a'):_0x23476a+=_0x8169a6(0x159)+config[_0x8169a6(0x113)]+'help\x20to\x20see\x20all\x20available\x20commands.',await _0x53f2d2['reply'](_0x23476a);}else _0xf24d[_0x8169a6(0x104)]===_0x8169a6(0x149)&&await _0x53f2d2[_0x8169a6(0xdb)](_0x8169a6(0x11a)+_0xf24d[_0x8169a6(0x154)]);}catch(_0x4cf9ea){handleError(_0x8169a6(0x124),_0x4cf9ea),_0x53f2d2['reply'](_0x8169a6(0x10e));}}),bot['on'](_0xbdb6de(0xde),async _0x3e5ba5=>{const _0x44cd81=_0xbdb6de;try{const _0x5af53c=_0x3e5ba5['message'][_0x44cd81(0xde)],_0x4e9da2=_0x3e5ba5[_0x44cd81(0x10d)];global['Meta'][_0x44cd81(0x14d)]['groupsJoined']++,global[_0x44cd81(0xf1)][_0x44cd81(0x14d)][_0x44cd81(0xe1)]+=_0x5af53c[_0x44cd81(0x14a)];for(const _0x15195a of _0x5af53c){if(_0x15195a['id']===_0x3e5ba5[_0x44cd81(0x111)]['id'])await _0x3e5ba5[_0x44cd81(0xdb)](_0x44cd81(0x109)+_0x4e9da2[_0x44cd81(0xed)]+_0x44cd81(0xe6)+config[_0x44cd81(0x113)]+_0x44cd81(0xef)+config[_0x44cd81(0x113)]+'help\x20to\x20see\x20my\x20commands.');else{const _0x2bcba8=config[_0x44cd81(0x14f)][_0x44cd81(0xf6)](_0x44cd81(0x145),'['+_0x15195a[_0x44cd81(0xfd)]+_0x44cd81(0xe0)+_0x15195a['id']+')')[_0x44cd81(0xf6)](_0x44cd81(0x118),_0x4e9da2['title']);await _0x3e5ba5['replyWithMarkdown'](_0x2bcba8);}}}catch(_0x18f3e3){handleError(_0x44cd81(0xe8),_0x18f3e3);}}),bot['on'](_0xbdb6de(0x161),async _0x167455=>{const _0x26b564=_0xbdb6de;try{const _0x2c8970=_0x167455['message'][_0x26b564(0x161)];if(_0x2c8970['id']!==_0x167455['botInfo']['id']){const _0x1ee2be=config[_0x26b564(0x130)][_0x26b564(0xf6)](_0x26b564(0x145),'['+_0x2c8970[_0x26b564(0xfd)]+_0x26b564(0xe0)+_0x2c8970['id']+')')['replace']('{group}',_0x167455[_0x26b564(0x10d)][_0x26b564(0xed)]);await _0x167455['replyWithMarkdown'](_0x1ee2be),global[_0x26b564(0xf1)][_0x26b564(0x14d)][_0x26b564(0xe1)]--;}}catch(_0x1730be){handleError('LeaveMessage',_0x1730be);}}),bot[_0xbdb6de(0x112)](async(_0x20dc48,_0x2ec826)=>{const _0x47cb68=_0xbdb6de,_0x41f916={'message\x20too\x20long':_0x47cb68(0xff),'failed\x20to\x20fetch':_0x47cb68(0xeb),'not\x20enough\x20rights':'❌\x20I\x20need\x20admin\x20rights\x20to\x20perform\x20this\x20action.','Too\x20Many\x20Requests':_0x47cb68(0x167),'default':_0x47cb68(0x10e)},_0x4b8c1e=_0x41f916[Object[_0x47cb68(0x101)](_0x41f916)['find'](_0x479b56=>_0x20dc48[_0x47cb68(0x154)][_0x47cb68(0x125)](_0x479b56))]||_0x41f916[_0x47cb68(0x143)];await _0x2ec826[_0x47cb68(0xdb)](_0x4b8c1e),handleError('BotError',_0x20dc48);});const tempDir=path['join'](__dirname,'temp');fs['ensureDirSync'](tempDir),setInterval(()=>{const _0x9cc272=_0xbdb6de,_0x1c50b3=Date[_0x9cc272(0x13e)]();global['Meta'][_0x9cc272(0x15d)][_0x9cc272(0x13d)]((_0x5c09f0,_0x59a697)=>{const _0x50fa90=_0x9cc272;if(_0x1c50b3>=_0x5c09f0)global[_0x50fa90(0xf1)][_0x50fa90(0x15d)][_0x50fa90(0x157)](_0x59a697);}),global[_0x9cc272(0xf1)][_0x9cc272(0xfa)][_0x9cc272(0x13d)]((_0x3170d4,_0x26a9a2)=>{const _0x543012=_0x9cc272;if(_0x1c50b3-_0x3170d4[_0x543012(0x12a)]>=0x1388)global['Meta'][_0x543012(0xfa)][_0x543012(0x157)](_0x26a9a2);});},0x1388),setInterval(cleanupTempFiles,0x36ee80),bot['launch']()['then'](()=>{const _0x250e49=_0xbdb6de;console[_0x250e49(0x129)]();const _0x31a08e='═'[_0x250e49(0x11d)](0x28);console[_0x250e49(0xe3)]('╔'+_0x31a08e+'╗'),console['log'](_0x250e49(0xe4)),console[_0x250e49(0xe3)]('╠'+_0x31a08e+'╣'),console[_0x250e49(0xe3)](_0x250e49(0xd9)),console[_0x250e49(0xe3)](_0x250e49(0x117)+config[_0x250e49(0x113)][_0x250e49(0x12d)](0x1b)+'║'),console[_0x250e49(0xe3)](_0x250e49(0x15e)+config[_0x250e49(0x158)][_0x250e49(0x12d)](0x1b)+'║'),console[_0x250e49(0xe3)](_0x250e49(0x165)+new Date()[_0x250e49(0x103)]()['padEnd'](0x1b)+'║'),console['log']('╚'+_0x31a08e+'╝');})[_0xbdb6de(0x112)](_0x2258c2=>{const _0x1a8899=_0xbdb6de;handleError('StartupError',_0x2258c2),process[_0x1a8899(0x11f)](0x1);}),process['once'](_0xbdb6de(0x137),()=>bot[_0xbdb6de(0x107)](_0xbdb6de(0x137))),process[_0xbdb6de(0x152)](_0xbdb6de(0x11e),()=>bot[_0xbdb6de(0x107)](_0xbdb6de(0x11e)));
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const axios = require('axios');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const config = require('./config.json');
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
+    ]
+});
+
+const app = express();
+client.commands = new Collection();
+client.aliases = new Collection();
+global.Meta = {};
+
+Meta.onReply = new Map();
+
+const { loadCommands } = require('./handler/commandHandler');
+const { setupAPI } = require('./handler/apiHandler');
+const { handleError } = require('./handler/errorHandler');
+
+app.use(express.json());
+
+process.on('unhandledRejection', error => {
+    handleError(error, client);
+});
+
+client.on('ready', () => {
+    console.log(`
+    ====================================
+    [STARTING] MeTa-DC-V2 Robot
+    ====================================
+    [CREATOR] NZ R
+    [STATUS] ${client.user.tag} is online!
+    ====================================
+    `);
+    console.log(`[META] Loaded ${client.commands.size} commands`);
+    client.user.setActivity('MeTa-DC-V2 | By NZ R', { type: 'PLAYING' });
+});
+
+client.on('guildMemberAdd', member => {
+    const channel = member.guild.systemChannel;
+    if (channel) channel.send(`Welcome ${member.user.tag} to ${member.guild.name}!`);
+});
+
+client.on('guildMemberRemove', member => {
+    const channel = member.guild.systemChannel;
+    if (channel) channel.send(`${member.user.tag} has left ${member.guild.name}.`);
+});
+
+client.on('messageCreate', async message => {
+    if (message.author.bot) return;
+
+    if (Meta.onReply.has(message.author.id)) {
+        const replyData = Meta.onReply.get(message.author.id);
+        if (message.reference && message.reference.messageId === replyData.messageId) {
+            return replyData.callback(message);
+        }
+    }
+
+    if (!message.content.startsWith(config.prefix)) return;
+
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
+    const cmd = args.shift().toLowerCase();
+
+    if (!cmd) {
+        return message.reply(`Command not found. Type \`${config.prefix}help\` to see all available commands.`);
+    }
+
+    const command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+
+    if (command) {
+        try {
+            await command.heyMetaStart({
+                client,
+                message,
+                args,
+                prefix: config.prefix
+            });
+        } catch (error) {
+            handleError(error, client);
+        }
+    } else {
+        return message.reply(`Command not found. Type \`${config.prefix}help\` to see all available commands.`);
+    }
+});
+
+loadCommands(client);
+setupAPI(app);
+
+const PORT = process.env.PORT || config.port;
+app.listen(PORT, () => {
+    console.log(`[META] API Server running on port ${PORT}`);
+});
+
+client.login(config.token);
