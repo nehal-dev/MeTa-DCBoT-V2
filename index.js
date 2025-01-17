@@ -21,9 +21,9 @@ global.Meta = {};
 
 Meta.onReply = new Map();
 
-const { loadCommands } = require('./handler/commandHandler');
-const { setupAPI } = require('./handler/apiHandler');
-const { handleError } = require('./handler/errorHandler');
+const { loadCommands } = require('./handlers/commandHandler');
+const { setupAPI } = require('./handlers/apiHandler');
+const { handleError } = require('./handlers/errorHandler');
 
 app.use(express.json());
 
