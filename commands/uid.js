@@ -1,26 +1,30 @@
+const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
     config: {
         name: "uid",
-        aliases: ["userid"],
-        version: "1.2",
+        aliases: ["id"],
+        version: "1.0",
         author: "NZ R",
-        countDown: 5,
+        countDown: 3,
         role: 0,
-        category: "utility",
+        category: "UTILITY",
         guide: {
-            en: "-uid"
+            en: "Get user ID\nUsage: -uid [@user]"
         }
     },
-    heyMetaStart: async function({ ctx }) {
-        const userId = ctx.from.id;
+    heyMetaStart: async function({ message }) {
+        try {
+            const targetUser = message.mentions.users.first() || message.author;
 
-        if (!userId) return ctx.reply("❌ Unable to fetch your UID!");
+            const embed = new EmbedBuilder()
+                .setColor('#2F3136')
+                .setDescription(`${targetUser.username}'s UID: \`${targetUser.id}\``);
 
-        const replyText = `<code>${userId}</code>`;
+            message.reply({ embeds: [embed] });
 
-        return ctx.reply(replyText, {
-            parse_mode: "HTML",
-            reply_to_message_id: ctx.message.message_id,
-        });
+        } catch (error) {
+            message.reply('❌ Failed to get user ID.');
+        }
     }
 };
