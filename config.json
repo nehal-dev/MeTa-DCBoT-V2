@@ -1,7 +1,6 @@
 {
+  "token": "MTMyMjMxOTI4MTgxOTQ4ODI1Ng.Gg8Jh5.N9UeInig5A2FQcKv7SU-RSgn-voc7JwQ0DyTJU",
+  "adminID": "1306646391325589529",
   "prefix": "-",
-  "botName": "MeTa-AI",
-  "botToken": "6860700009:AAF8owKFuVY9a9X-BUfURdOp5hTP2YjXRVU",
-  "ownerUID": "6774532793",
-  "version": "1.0.0"
+  "port": 3000
 }
