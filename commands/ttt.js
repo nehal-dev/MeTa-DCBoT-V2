@@ -4,7 +4,7 @@ module.exports = {
     config: {
         name: "tictactoe",
         aliases: ["ttt"],
-        version: "2.0.0",
+        version: "2.1.0",
         author: "NZ R",
         countDown: 5,
         role: 0,
@@ -115,138 +115,104 @@ module.exports = {
             return rows;
         }
 
-        const embed = new EmbedBuilder()
-            .setColor('#00ff00')
-            .setTitle('Tic Tac Toe')
-            .setDescription(`It's your turn! (${userSymbol})`);
+        async function startGame() {
+            const embed = new EmbedBuilder()
+                .setColor('#00ff00')
+                .setTitle('Tic Tac Toe')
+                .setDescription(`It's your turn! (${userSymbol})`);
 
-        const gameMessage = await message.channel.send({
-            embeds: [embed],
-            components: getBoardButtons()
-        });
-
-        const collector = gameMessage.createMessageComponentCollector({ time: 60000 });
-
-        collector.on('collect', async interaction => {
-            if (!gameActive || interaction.user.id !== message.author.id || currentTurn !== 'user') {
-                return await interaction.reply({
-                    content: "It's not your turn to play!",
-                    ephemeral: true
-                });
-            }
-
-            const [_, row, col] = interaction.customId.split('_').map(Number);
-            board[row][col] = userSymbol;
-            currentTurn = 'bot';
-
-            if (isWinning(board, userSymbol)) {
-                gameActive = false;
-                embed.setDescription('🎉 You win!').setColor('#00ff00');
-                await gameMessage.edit({
-                    embeds: [embed],
-                    components: [
-                        new ActionRowBuilder().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('play_again')
-                                .setLabel('Play Again')
-                                .setStyle(ButtonStyle.Primary)
-                        )
-                    ]
-                });
-                return;
-            }
-
-            if (isDraw(board)) {
-                gameActive = false;
-                embed.setDescription("It's a draw! 🤝").setColor('#ffa500');
-                await gameMessage.edit({
-                    embeds: [embed],
-                    components: [
-                        new ActionRowBuilder().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('play_again')
-                                .setLabel('Play Again')
-                                .setStyle(ButtonStyle.Primary)
-                        )
-                    ]
-                });
-                return;
-            }
-
-            await interaction.update({
+            const gameMessage = await message.channel.send({
                 embeds: [embed],
                 components: getBoardButtons()
             });
 
-            setTimeout(async () => {
-                botMove();
-                currentTurn = 'user';
+            const collector = gameMessage.createMessageComponentCollector({ time: 60000 });
 
-                if (isWinning(board, botSymbol)) {
-                    gameActive = false;
-                    embed.setDescription('🤖 MeTa wins! Better luck next time!').setColor('#ff0000');
-                    await gameMessage.edit({
-                        embeds: [embed],
-                        components: [
-                            new ActionRowBuilder().addComponents(
-                                new ButtonBuilder()
-                                    .setCustomId('play_again')
-                                    .setLabel('Play Again')
-                                    .setStyle(ButtonStyle.Primary)
-                            )
-                        ]
+            collector.on('collect', async interaction => {
+                if (!gameActive || interaction.user.id !== message.author.id || currentTurn !== 'user') {
+                    return await interaction.reply({
+                        content: "It's not your turn to play!",
+                        ephemeral: true
                     });
+                }
+
+                const [_, row, col] = interaction.customId.split('_').map(Number);
+                board[row][col] = userSymbol;
+                currentTurn = 'bot';
+
+                if (isWinning(board, userSymbol)) {
+                    gameActive = false;
+                    embed.setDescription('You win.! 🎉😩').setColor('#00ff00');
+                    await endGame(gameMessage, embed);
                     return;
                 }
 
                 if (isDraw(board)) {
                     gameActive = false;
                     embed.setDescription("It's a draw! 🤝").setColor('#ffa500');
-                    await gameMessage.edit({
-                        embeds: [embed],
-                        components: [
-                            new ActionRowBuilder().addComponents(
-                                new ButtonBuilder()
-                                    .setCustomId('play_again')
-                                    .setLabel('Play Again')
-                                    .setStyle(ButtonStyle.Primary)
-                            )
-                        ]
-                    });
+                    await endGame(gameMessage, embed);
                     return;
                 }
 
-                await gameMessage.edit({
+                await interaction.update({
                     embeds: [embed],
                     components: getBoardButtons()
                 });
-            }, 1000);
-        });
 
-        collector.on('end', async () => {
-            if (gameActive) {
-                embed.setDescription('⏰ Time is up! The game has ended.').setColor('#808080');
-                await gameMessage.edit({
-                    embeds: [embed],
-                    components: [
-                        new ActionRowBuilder().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('play_again')
-                                .setLabel('Play Again')
-                                .setStyle(ButtonStyle.Primary)
-                        )
-                    ]
-                });
-            }
-        });
+                setTimeout(async () => {
+                    botMove();
+                    currentTurn = 'user';
 
-        const playAgainCollector = gameMessage.createMessageComponentCollector({ time: 30000 });
-        playAgainCollector.on('collect', async interaction => {
-            if (interaction.customId === 'play_again') {
-                playAgainCollector.stop();
-                module.exports.heyMetaStart({ message });
-            }
-        });
+                    if (isWinning(board, botSymbol)) {
+                        gameActive = false;
+                        embed.setDescription('Yeaah..! Better luck next time Nope.!').setColor('#ff0000');
+                        await endGame(gameMessage, embed);
+                        return;
+                    }
+
+                    if (isDraw(board)) {
+                        gameActive = false;
+                        embed.setDescription("It's a draw.! 🤝").setColor('#ffa500');
+                        await endGame(gameMessage, embed);
+                        return;
+                    }
+
+                    await gameMessage.edit({
+                        embeds: [embed],
+                        components: getBoardButtons()
+                    });
+                }, 1000);
+            });
+
+            collector.on('end', async () => {
+                if (gameActive) {
+                    embed.setDescription('⏰ Time is up! The game has ended.').setColor('#808080');
+                    await endGame(gameMessage, embed);
+                }
+            });
+        }
+
+        async function endGame(gameMessage, embed) {
+            await gameMessage.edit({
+                embeds: [embed],
+                components: [
+                    new ActionRowBuilder().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('play_again')
+                            .setLabel('Play Again')
+                            .setStyle(ButtonStyle.Primary)
+                    )
+                ]
+            });
+
+            const playAgainCollector = gameMessage.createMessageComponentCollector({ time: 30000 });
+            playAgainCollector.on('collect', async interaction => {
+                if (interaction.customId === 'play_again' && interaction.user.id === message.author.id) {
+                    playAgainCollector.stop();
+                    module.exports.heyMetaStart({ message });
+                }
+            });
+        }
 
         const activeGames = new Set();
         if (activeGames.has(message.channel.id)) {
@@ -254,8 +220,8 @@ module.exports = {
         }
         activeGames.add(message.channel.id);
 
-        collector.on('end', () => {
-            activeGames.delete(message.channel.id);
-        });
+        startGame();
+
+        activeGames.delete(message.channel.id);
     }
 };
