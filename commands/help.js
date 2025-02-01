@@ -16,7 +16,7 @@ module.exports = {
         longDescription: {
             en: "View all commands or get details about a specific command"
         },
-        category: "Utility",
+        category: "utility",
         guide: {
             en: "-help\n-help <command_name>"
         }

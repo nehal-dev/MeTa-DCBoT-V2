@@ -53,10 +53,10 @@ module.exports = {
                 .composite([{ input: watermarkBuffer, gravity: 'southeast' }])
                 .toBuffer();
 
-            const attachment = new AttachmentBuilder(finalImage, { name: 'image_with_watermark.jpeg' });
+            const attachment = new AttachmentBuilder(finalImage, { name: 'image-gen-by-MeTa.jpeg' });
             const imageEmbed = new EmbedBuilder()
                 .setColor('#4ecdc4')
-                .setImage('attachment://image_with_watermark.jpeg');
+                .setImage('attachment://image-gen-by-MeTa.jpeg');
 
             await waitingMessage.delete();
             await message.reply({ embeds: [imageEmbed], files: [attachment] });
