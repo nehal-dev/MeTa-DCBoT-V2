@@ -23,6 +23,7 @@ module.exports = {
         const botSymbol = '⭕';
         let gameActive = true;
         let currentTurn = 'user';
+        const userId = message.author.id;
 
         function isWinning(board, symbol) {
             for (let i = 0; i < 3; i++) {
@@ -129,7 +130,7 @@ module.exports = {
             const collector = gameMessage.createMessageComponentCollector({ time: 60000 });
 
             collector.on('collect', async interaction => {
-                if (!gameActive || interaction.user.id !== message.author.id || currentTurn !== 'user') {
+                if (!gameActive || interaction.user.id !== userId || currentTurn !== 'user') {
                     return await interaction.reply({
                         content: "It's not your turn to play!",
                         ephemeral: true
@@ -207,17 +208,24 @@ module.exports = {
 
             const playAgainCollector = gameMessage.createMessageComponentCollector({ time: 30000 });
             playAgainCollector.on('collect', async interaction => {
-                if (interaction.customId === 'play_again' && interaction.user.id === message.author.id) {
+                if (interaction.customId === 'play_again' && interaction.user.id === userId) {
                     playAgainCollector.stop();
                     module.exports.heyMetaStart({ message });
+                } else {
+                    await interaction.reply({
+                        content: "It's not your turn to play!",
+                        ephemeral: true
+                    });
                 }
             });
         }
 
         const activeGames = new Set();
+
         if (activeGames.has(message.channel.id)) {
             return message.reply("A game is already in progress in this channel. Please wait for it to finish.");
         }
+
         activeGames.add(message.channel.id);
 
         startGame();
