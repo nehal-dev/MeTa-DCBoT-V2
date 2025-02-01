@@ -7,7 +7,7 @@ module.exports = {
     config: {
         name: "pokemon",
         aliases: ["pokedex"],
-        version: "1.4.0",
+        version: "1.5.0",
         author: "NZ R",
         countDown: 5,
         role: 0,
@@ -28,7 +28,7 @@ module.exports = {
             await loadingMsg.delete();
 
             let hasAnswered = false;
-            let timeLeft = 20;
+            let timeLeft = 40;
 
             const questionEmbed = new EmbedBuilder()
                 .setColor('#4ecdc4')
@@ -49,7 +49,6 @@ module.exports = {
                 files: [{ attachment: imagePath, name: `pokemon_${pokemonId}.png` }]
             });
 
-            // Countdown Timer
             const timerInterval = setInterval(async () => {
                 if (timeLeft > 0) {
                     timeLeft -= 5;
@@ -68,19 +67,17 @@ module.exports = {
                 }
             }, 5000);
 
-            const buttonCollector = questionMsg.createMessageComponentCollector({ time: 20000 });
+            const buttonCollector = questionMsg.createMessageComponentCollector({ time: 40000 });
 
             buttonCollector.on('collect', async interaction => {
                 if (interaction.customId === 'hint') {
-                    await interaction.reply({
-                        content: `This Pokémon's name starts with: **${pokemonData.name.charAt(0).toUpperCase()}**`,
-                        ephemeral: true
-                    });
+                    const hint = `This Pokémon's name starts with: **${pokemonData.name.charAt(0).toUpperCase()}**`;
+                    await interaction.reply({ content: hint, ephemeral: true });
                 }
             });
 
             const filter = m => m.author.id === message.author.id;
-            const messageCollector = message.channel.createMessageCollector({ filter, max: 1, time: 20000 });
+            const messageCollector = message.channel.createMessageCollector({ filter, max: 1, time: 40000 });
 
             messageCollector.on('collect', async reply => {
                 const userAnswer = reply.content.toLowerCase().trim();
@@ -88,7 +85,6 @@ module.exports = {
 
                 if (hasAnswered) return;
                 hasAnswered = true;
-
                 await reply.delete().catch(() => {});
 
                 if (userAnswer === correctAnswer) {
@@ -98,14 +94,14 @@ module.exports = {
 
                     const successMsg = [
                         `🎉 Correct!`,
-                        `\n📍 Pokémon: ${correctAnswer.charAt(0).toUpperCase() + correctAnswer.slice(1)}`,
-                        `\n📊 Types: ${pokemonData.types.map(t => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1)).join(', ')}`,
+                        `📍 Pokémon: ${correctAnswer.charAt(0).toUpperCase() + correctAnswer.slice(1)}`,
+                        `📊 Types: ${pokemonData.types.map(t => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1)).join(', ')}`,
                         `📏 Height: ${pokemonData.height / 10}m`,
                         `⚖️ Weight: ${pokemonData.weight / 10}kg`,
                         `✨ Base Experience: ${pokemonData.base_experience}`,
-                        `\n📈 Base Stats:`,
+                        `📈 Base Stats:`,
                         stats,
-                        `\n🎯 Abilities: ${pokemonData.abilities.map(a => a.ability.name.charAt(0).toUpperCase() + a.ability.name.slice(1)).join(', ')}`
+                        `🎯 Abilities: ${pokemonData.abilities.map(a => a.ability.name.charAt(0).toUpperCase() + a.ability.name.slice(1)).join(', ')}`
                     ].join('\n');
 
                     await message.channel.send(successMsg);
@@ -133,7 +129,6 @@ module.exports = {
                 questionMsg.delete().catch(console.error);
                 if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
             }
-
         } catch (error) {
             console.error('Error:', error);
             await message.channel.send('🚫 An error occurred. Please try again.').then(msg => msg.delete()).catch(() => {});
