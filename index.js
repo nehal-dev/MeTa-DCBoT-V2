@@ -42,181 +42,277 @@ app.use(limiter);
 
 app.get('/', (req, res) => {
     res.send(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>MeTa-DC-v2 Dashboard</title>
-            <style>
-                :root {
-                    --primary: #7289da;
-                    --secondary: #2c2f33;
-                    --background: #23272a;
-                    --text: #ffffff;
-                    --accent: #99aab5;
-                }
-                
-                * {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
-                
-                @keyframes gradientBG {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-                
-                @keyframes float {
-                    0% { transform: translateY(0px); }
-                    50% { transform: translateY(-20px); }
-                    100% { transform: translateY(0px); }
-                }
-                
-                @keyframes pulse {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.05); }
-                    100% { transform: scale(1); }
-                }
-                
-                body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background: linear-gradient(-45deg, #23272a, #2c2f33, #7289da, #99aab5);
-                    background-size: 400% 400%;
-                    animation: gradientBG 15s ease infinite;
-                    min-height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: var(--text);
-                }
-                
-                .container {
-                    background: rgba(35, 39, 42, 0.95);
-                    border-radius: 20px;
-                    padding: 2rem;
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(15px);
-                    width: 90%;
-                    max-width: 800px;
-                    text-align: center;
-                }
-                
-                .profile-img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 50%;
-                    border: 4px solid var(--primary);
-                    margin-bottom: 1rem;
-                    animation: float 6s ease-in-out infinite;
-                }
-                
-                .status {
-                    display: inline-block;
-                    padding: 0.5rem 1rem;
-                    background: var(--primary);
-                    border-radius: 25px;
-                    margin: 1rem 0;
-                    animation: pulse 2s infinite;
-                }
-                
-                .stats {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                    gap: 1rem;
-                    margin: 2rem 0;
-                }
-                
-                .stat-card {
-                    background: rgba(114, 137, 218, 0.1);
-                    padding: 1rem;
-                    border-radius: 15px;
-                    transition: transform 0.3s ease;
-                }
-                
-                .stat-card:hover {
-                    transform: translateY(-5px);
-                    background: rgba(114, 137, 218, 0.2);
-                }
-                
-                h1 {
-                    font-size: 2.5rem;
-                    margin-bottom: 1rem;
-                    background: linear-gradient(45deg, var(--primary), var(--accent));
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-                
-                @media (max-width: 600px) {
-                    .container {
-                        width: 95%;
-                        padding: 1rem;
-                    }
-                    
-                    .stats {
-                        grid-template-columns: 1fr;
-                    }
-                    
-                    h1 {
-                        font-size: 2rem;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <img src="${client.user.displayAvatarURL({ format: 'png', size: 512 })}" alt="Bot Avatar" class="profile-img">
-                <h1>MeTa-DC-v2</h1>
-                <div class="stats">
-                    <div class="stat-card">
-                        <h3>Servers</h3>
-                        <p>${client.guilds.cache.size}</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Users</h3>
-                        <p>${client.users.cache.size}</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Commands</h3>
-                        <p>${client.commands.size}</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Uptime</h3>
-                        <p id="uptime">Calculating...</p>
-                    </div>
-                </div>
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeTa-DC-v2 Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7289da;
+            --secondary: #2c2f33;
+            --background: #23272a;
+            --text: #ffffff;
+            --accent: #99aab5;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 0% 50%; }
+            100% { background-position: 50% 0%; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ff3366, #7289da, #00ccff, #33cc33);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text);
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            cursor: pointer;
+            background: var(--glass);
+            padding: 1rem;
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .menu-toggle:hover {
+            transform: rotate(90deg);
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(35, 39, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            transition: 0.5s;
+            z-index: 999;
+        }
+
+        .menu.active {
+            right: 0;
+        }
+
+        .menu-item {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: var(--glass);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-item:hover {
+            background: var(--primary);
+            transform: translateX(-10px);
+        }
+
+        .container {
+            background: rgba(35, 39, 42, 0.85);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+            border: 1px solid var(--glass);
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            margin-bottom: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(114, 137, 218, 0.1), rgba(114, 137, 218, 0.05));
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            border: 1px solid var(--glass);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: linear-gradient(135deg, rgba(114, 137, 218, 0.2), rgba(114, 137, 218, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), #ff3366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .menu {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle">
+        <i class="fas fa-bars fa-2x"></i>
+    </div>
+
+    <div class="menu">
+        <div class="menu-item" onclick="window.open('https://discord.com/oauth2/authorize?client_id=1322319281819488256', '_blank')">
+            <i class="fas fa-robot"></i>
+            <span>Connect with Bot</span>
+        </div>
+        <div class="menu-item" onclick="window.open('https://discord.com/oauth2/authorize?client_id=1322319281819488256', '_blank')">
+            <i class="fas fa-server"></i>
+            <span>Add to Server</span>
+        </div>
+        <div class="menu-item" onclick="window.open('https://discord.gg/jFCnkQqC', '_blank')">
+            <i class="fas fa-user"></i>
+            <span>Contact NZ R.!</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <img src="${client.user.displayAvatarURL({ format: 'png', size: 512 })}" alt="Bot Avatar" class="profile-img">
+        <h1>MeTa-DC-v2</h1>
+        <div class="stats">
+            <div class="stat-card">
+                <i class="fas fa-server"></i>
+                <h3>Servers</h3>
+                <p>${client.guilds.cache.size}</p>
             </div>
-            <script>
-                function updateUptime() {
-                    const startTime = ${client.readyTimestamp};
-                    const now = Date.now();
-                    const uptime = now - startTime;
-                    
-                    const days = Math.floor(uptime / 86400000);
-                    const hours = Math.floor((uptime % 86400000) / 3600000);
-                    const minutes = Math.floor((uptime % 3600000) / 60000);
-                    
-                    document.getElementById('uptime').textContent = 
-                        \`\${days}d \${hours}h \${minutes}m\`;
-                }
-                
-                setInterval(updateUptime, 60000);
-                updateUptime();
-                
-                document.querySelectorAll('.stat-card').forEach(card => {
-                    card.addEventListener('mouseover', () => {
-                        card.style.transform = 'scale(1.05) translateY(-5px)';
-                    });
-                    
-                    card.addEventListener('mouseout', () => {
-                        card.style.transform = 'translateY(0)';
-                    });
-                });
-            </script>
-        </body>
-        </html>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>Users</h3>
+                <p>${client.users.cache.size}</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-code"></i>
+                <h3>Commands</h3>
+                <p>${client.commands.size}</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <h3>Uptime</h3>
+                <p id="uptime">Calculating...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateUptime() {
+            const startTime = ${client.readyTimestamp};
+            const now = Date.now();
+            const uptime = now - startTime;
+            
+            const days = Math.floor(uptime / 86400000);
+            const hours = Math.floor((uptime % 86400000) / 3600000);
+            const minutes = Math.floor((uptime % 3600000) / 60000);
+            
+            document.getElementById('uptime').textContent = 
+                `${days}d ${hours}h ${minutes}m`;
+        }
+
+        setInterval(updateUptime, 60000);
+        updateUptime();
+
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.menu').classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.menu') && !e.target.closest('.menu-toggle')) {
+                document.querySelector('.menu').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
     `);
 });
 
