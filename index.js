@@ -258,23 +258,23 @@ app.get('/', (req, res) => {
     </div>
 
     <div class="container">
-        <img src="${client.user.displayAvatarURL({ format: 'png', size: 512 })}" alt="Bot Avatar" class="profile-img">
+        <img src="${client.user?.displayAvatarURL({ format: 'png', size: 512 }) || 'https://via.placeholder.com/150'}" alt="Bot Avatar" class="profile-img">
         <h1>MeTa-DC-v2</h1>
         <div class="stats">
             <div class="stat-card">
                 <i class="fas fa-server"></i>
                 <h3>Servers</h3>
-                <p>${client.guilds.cache.size}</p>
+                <p>${client.guilds?.cache?.size || 0}</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-users"></i>
                 <h3>Users</h3>
-                <p>${client.users.cache.size}</p>
+                <p>${client.users?.cache?.size || 0}</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-code"></i>
                 <h3>Commands</h3>
-                <p>${client.commands.size}</p>
+                <p>${client.commands?.size || 0}</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-clock"></i>
@@ -285,22 +285,32 @@ app.get('/', (req, res) => {
     </div>
 
     <script>
-    function updateUptime() {
-        const startTime = ${client.readyTimestamp};
-        const now = Date.now();
-        const uptime = now - startTime;
-        
-        const days = Math.floor(uptime / 86400000);
-        const hours = Math.floor((uptime % 86400000) / 3600000);
-        const minutes = Math.floor((uptime % 3600000) / 60000);
-        
-        document.getElementById('uptime').textContent = 
-            `${days}d ${hours}h ${minutes}m`;
-    }
+        function updateUptime() {
+            const startTime = ${client.readyTimestamp || Date.now()};
+            const now = Date.now();
+            const uptime = now - startTime;
+            
+            const days = Math.floor(uptime / 86400000);
+            const hours = Math.floor((uptime % 86400000) / 3600000);
+            const minutes = Math.floor((uptime % 3600000) / 60000);
+            
+            document.getElementById('uptime').textContent = 
+                \`\${days}d \${hours}h \${minutes}m\`;
+        }
 
-    setInterval(updateUptime, 60000);
-    updateUptime();
-</script>
+        setInterval(updateUptime, 60000);
+        updateUptime();
+
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.menu').classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.menu') && !e.target.closest('.menu-toggle')) {
+                document.querySelector('.menu').classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
     `);
