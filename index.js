@@ -285,32 +285,22 @@ app.get('/', (req, res) => {
     </div>
 
     <script>
-        function updateUptime() {
-            const startTime = ${client.readyTimestamp};
-            const now = Date.now();
-            const uptime = now - startTime;
-            
-            const days = Math.floor(uptime / 86400000);
-            const hours = Math.floor((uptime % 86400000) / 3600000);
-            const minutes = Math.floor((uptime % 3600000) / 60000);
-            
-            document.getElementById('uptime').textContent = 
-                `${days}d ${hours}h ${minutes}m`;
-        }
+    function updateUptime() {
+        const startTime = ${client.readyTimestamp};
+        const now = Date.now();
+        const uptime = now - startTime;
+        
+        const days = Math.floor(uptime / 86400000);
+        const hours = Math.floor((uptime % 86400000) / 3600000);
+        const minutes = Math.floor((uptime % 3600000) / 60000);
+        
+        document.getElementById('uptime').textContent = 
+            `${days}d ${hours}h ${minutes}m`;
+    }
 
-        setInterval(updateUptime, 60000);
-        updateUptime();
-
-        document.querySelector('.menu-toggle').addEventListener('click', () => {
-            document.querySelector('.menu').classList.toggle('active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.menu') && !e.target.closest('.menu-toggle')) {
-                document.querySelector('.menu').classList.remove('active');
-            }
-        });
-    </script>
+    setInterval(updateUptime, 60000);
+    updateUptime();
+</script>
 </body>
 </html>
     `);
