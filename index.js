@@ -98,7 +98,7 @@ app.get('/', (req, res) => {
                     border-radius: 20px;
                     padding: 2rem;
                     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
+                    backdrop-filter: blur(15px);
                     width: 90%;
                     max-width: 800px;
                     text-align: center;
@@ -169,7 +169,6 @@ app.get('/', (req, res) => {
             <div class="container">
                 <img src="${client.user.displayAvatarURL({ format: 'png', size: 512 })}" alt="Bot Avatar" class="profile-img">
                 <h1>MeTa-DC-v2</h1>
-                <div class="status">🟢 Online and Operational</div>
                 <div class="stats">
                     <div class="stat-card">
                         <h3>Servers</h3>
